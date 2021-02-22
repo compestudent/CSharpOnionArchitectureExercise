@@ -24,17 +24,18 @@ namespace Business.Concrete
 
         public Car ReturnAllBySelf(int carId)
         {
-            return _carDal.GetById(carId);
+            return _carDal.Get(p => p.CarId == carId);
         }
 
         public List<Car> ReturnAllByBrand(int brandId)
         {
-            return _carDal.GetAllByBrand(brandId);
+            return _carDal.GetAll(p => p.BrandId == brandId);
         }
 
         public List<Car> ReturnAllByColor(int colorId)
         {
-            return _carDal.GetAllByColor(colorId);
+            return _carDal.GetAll(p => p.ColorId == colorId);
         }
+        
     }
 }

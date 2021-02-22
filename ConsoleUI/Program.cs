@@ -3,24 +3,41 @@ using DataAccess.Concrete;
 using Entities.Abstract;
 using Entities.Concrete;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace ConsoleUI
 {
     class Program
     {
-        static void WaitAndClearConsole(int afterMiliseconds)
+        static int getDelayAmountFromUser()
         {
-            Thread.Sleep(afterMiliseconds);
-            Console.Clear();
+            int delayAmount = 0;
+            bool userEnteredDelayTime = false;
+            do
+            {
+                try
+                {
+                    Console.WriteLine("Please enter the time waiting time for each example to display on the screen: ");
+                    delayAmount = Convert.ToInt32(Console.ReadLine());
+                    delayAmount *= 1000;
+                    userEnteredDelayTime = true;
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Please enter the correct input !!!");
+                }
+
+            } while (userEnteredDelayTime == false);
+
+            return delayAmount;
         }
 
-        static void Main(string[] args)
+        static void Question1()
         {
-            //IEntity entity = new Brand();
             CarManager carManager = new CarManager(new LocalFakeDbCarDal());
-            int carCount = 0;
 
+            int carCount = 0;
             Console.WriteLine("\n******       First Example All cars:       ******\n");
             foreach (var car in carManager.ReturnAll())
             {
@@ -35,9 +52,13 @@ namespace ConsoleUI
                 Console.WriteLine("__________________________________________");
             }
             Console.WriteLine(carCount + " Cars Found.");
-            WaitAndClearConsole(5000);
+        }
 
-            carCount = 0;
+        static void Question2()
+        {
+            CarManager carManager = new CarManager(new LocalFakeDbCarDal());
+
+            int carCount = 0;
             int desiredId = 222;
             Console.WriteLine("\n******       Second Example Car whose ID is " + desiredId + ":       ******\n");
 
@@ -56,7 +77,6 @@ namespace ConsoleUI
                 Console.WriteLine("__________________________________________");
                 Console.WriteLine(++carCount + ". Car's Details: ");
                 Console.WriteLine("Car ID: " + searchedCar.CarId);
-                Console.WriteLine("ColorID: " + searchedCar.ColorId);
                 Console.WriteLine("Description: " + searchedCar.Description);
                 Console.WriteLine("__________________________________________");
                 Console.WriteLine(carCount + " Cars Found.");
@@ -65,10 +85,13 @@ namespace ConsoleUI
             {
                 Console.WriteLine("There is no such car with given ID");
             }
-            WaitAndClearConsole(5000);
+        }
 
+        static void Question3()
+        {
+            CarManager carManager = new CarManager(new LocalFakeDbCarDal());
 
-            carCount = 0;
+            int carCount = 0;
             Console.WriteLine("\n******       Third Example All cars whose colorId is 3:       ******\n");
 
             foreach (var car in carManager.ReturnAllByColor(3))
@@ -81,10 +104,13 @@ namespace ConsoleUI
                 Console.WriteLine("__________________________________________");
             }
             Console.WriteLine(carCount + " Cars Found.");
-            WaitAndClearConsole(5000);
+        }
 
+        static void Question4()
+        {
+            CarManager carManager = new CarManager(new LocalFakeDbCarDal());
 
-            carCount = 0;
+            int carCount = 0;
             Console.WriteLine("\n******       Fourth Example All cars whose brandId is 2:       ******\n");
 
             foreach (var car in carManager.ReturnAllByBrand(2))
@@ -92,11 +118,37 @@ namespace ConsoleUI
                 Console.WriteLine("__________________________________________");
                 Console.WriteLine(++carCount + ". Car's Details: ");
                 Console.WriteLine("Car ID: " + car.CarId);
-                Console.WriteLine("ColorID: " + car.ColorId);
+                Console.WriteLine("Brand ID: " + car.BrandId);
                 Console.WriteLine("Description: " + car.Description);
                 Console.WriteLine("__________________________________________");
             }
             Console.WriteLine(carCount + " Cars Found.");
+        }
+
+        static void WaitAndGetNextQuestion(int afterMiliseconds, List<Action> allQuestions)
+        {
+            foreach (var question in allQuestions)
+            {
+                question.DynamicInvoke();
+                Thread.Sleep(afterMiliseconds);
+                Console.Clear();
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            //IEntity entity = new Brand();
+            int delayAmount = getDelayAmountFromUser();
+
+            CarManager carManager = new CarManager(new LocalFakeDbCarDal());
+
+            List<Action> allQuestions = new List<Action>();
+            allQuestions.Add(Question1);
+            allQuestions.Add(Question2);
+            allQuestions.Add(Question3);
+            allQuestions.Add(Question4);
+
+            WaitAndGetNextQuestion(delayAmount, allQuestions);
         }
     }
 }

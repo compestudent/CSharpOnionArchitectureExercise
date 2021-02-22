@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\ICarDal.cs" />
+    <Compile Include="Abstract\IEntityRepository.cs" />
     <Compile Include="Concrete\EntityFrameWorkCarDal.cs" />
     <Compile Include="Concrete\LocalFakeDbCarDal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

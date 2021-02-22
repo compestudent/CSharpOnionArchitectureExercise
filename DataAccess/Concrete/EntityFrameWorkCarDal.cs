@@ -10,37 +10,29 @@ namespace DataAccess.Concrete
 {
     public class EntityFrameWorkCarDal : ICarDal
     {
-        public void Add(Car car)
+        // Not in my interest Since Entity Framework and DB Operations are for Web Development :)
+
+        public void Add(Car Entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(Car car)
+        public void Delete(Car Entity)
         {
             throw new NotImplementedException();
         }
 
-        public List<Car> GetAll()
+        public Car Get(Func<Car, bool> filter)
         {
             throw new NotImplementedException();
         }
 
-        public List<Car> GetAllByBrand(int brandId)
+        public List<Car> GetAll(Func<Car, bool> filter = null)
         {
             throw new NotImplementedException();
         }
 
-        public List<Car> GetAllByColor(int colorId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Car GetById(int carId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Car car)
+        public void Update(Car Entity)
         {
             throw new NotImplementedException();
         }
